@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora do Valor da Paz | Finanças com Propósito</title>
+    <style>
+        :root {
+            --primary: #2c5f2d;
+            --secondary: #97bc62;
+            --bg: #f4f7f6;
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 { color: var(--primary); text-align: center; }
+        p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+
+        .section { margin-bottom: 40px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        
+        .expense-row {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        label { font-weight: 600; font-size: 0.9em; }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .conditions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover { background: #1e421e; }
+
+        #resultArea {
+            margin-top: 30px;
+            display: none;
+            padding: 20px;
+            background: #eef7ee;
+            border-radius: 10px;
+        }
+
+        .result-box {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .result-label { font-weight: bold; color: var(--primary); }
+        .result-value { font-size: 1.2em; font-weight: bold; color: #27ae60; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Calculadora do Valor da Paz</h1>
+    <p class="subtitle">Descubra o fôlego financeiro necessário para sua tranquilidade.</p>
+
+    <div class="section">
+        <h2>1. Suas Despesas Mensais</h2>
+        <div id="expenseList">
+            </div>
+    </div>
+
+    <div class="section">
+        <h2>2. Condições Adicionais</h2>
+        <div class="conditions-grid">
+            <div class="card">
+                <label>Possui Carro?</label>
+                <select id="hasCar" onchange="toggleInput('carValueRow', this.value)">
+                    <option value="nao">Não</option>
+                    <option value="sim">Sim</option>
+                </select>
+                <div id="carValueRow" class="hidden" style="margin-top:10px">
+                    <label>Valor do Carro (R$)</label>
+                    <input type="number" id="carValue" placeholder="Ex: 50000">
+                </div>
+            </div>
+            <div class="card">
+                <label>Possui Convênio Médico?</label>
+                <select id="hasHealthIns" onchange="toggleInput('medValueRow', this.value)">
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+                <div id="medValueRow" class="hidden" style="margin-top:10px">
+                    <label>Gasto Médio Mensal (R$)</label>
+                    <input type="number" id="medValue" placeholder="Ex: 300">
+                </div>
+            </div>
+            <div class="card" style="grid-column: span 2;">
+                <label>Deseja considerar valor de imóvel (Casa)?</label>
+                <select id="hasHouse" onchange="toggleInput('houseValueRow', this.value)">
+                    <option value="nao">Não</option>
+                    <option value="sim">Sim</option>
+                </select>
+                <div id="houseValueRow" class="hidden" style="margin-top:10px">
+                    <label>Valor do Imóvel/Reserva Casa (R$)</label>
+                    <input type="number" id="houseValue" placeholder="Ex: 200000">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>3. Meses de Cobertura (Perfil)</h2>
+        <div class="conditions-grid">
+            <div>
+                <label>Tem dependentes?</label>
+                <select id="dependents">
+                    <option value="nao">Não</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+            <div>
+                <label>Divide contas da casa?</label>
+                <select id="shareBills">
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+                </select>
+            </div>
+            <div style="grid-column: span 2;">
+                <label>Estabilidade do Emprego</label>
+                <select id="jobStability">
+                    <option value="alta">Alta (Servidor Público)</option>
+                    <option value="media">Média (CLT)</option>
+                    <option value="baixa">Baixa (Autônomo/Empreendedor)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="calcularPaz()">Calcular Meu Valor da Paz</button>
+
+    <div id="resultArea">
+        <h2>Seu Diagnóstico de Paz</h2>
+        <div class="result-box">
+            <span class="result-label">Tempo de Cobertura Ideal:</span>
+            <span class="result-value" id="resMeses">-- meses</span>
+        </div>
+        <div class="result-box">
+            <span class="result-label">VALOR DA PAZ Essencial:</span>
+            <span class="result-value" id="resEssencial">R$ 0,00</span>
+        </div>
+        <div class="result-box" style="border-left: 5px solid var(--secondary);">
+            <span class="result-label">VALOR DA PAZ Essencial Plus:</span>
+            <span class="result-value" id="resPlus">R$ 0,00</span>
+        </div>
+        <p style="font-size: 0.8em; color: #666; text-align: center; margin-top: 20px;">
+            Este cálculo é o primeiro passo para sua liberdade. Que tal agendarmos uma conversa sobre seu propósito?
+        </p>
+    </div>
+</div>
+
+<script>
+    const categorias = [
+        "Moradia", "Contas de Consumo", "Seguros", "Transporte", 
+        "Dívidas e Empréstimos", "Alimentação", "Outros Essenciais", 
+        "Assinaturas/Streamings", "Corpo e Saúde"
+    ];
+
+    const container = document.getElementById('expenseList');
+
+    // Gerar inputs de despesas
+    categorias.forEach((cat, index) => {
+        const div = document.createElement('div');
+        div.className = 'expense-row';
+        div.innerHTML = `
+            <label>${cat}</label>
+            <input type="number" class="exp-val" data-index="${index}" placeholder="R$ 0,00">
+            <select class="exp-priority" data-index="${index}">
+                <option value="alta">Alta</option>
+                <option value="media">Média</option>
+                <option value="baixa">Baixa</option>
+            </select>
+        `;
+        container.appendChild(div);
+    });
+
+    function toggleInput(id, val) {
+        const el = document.getElementById(id);
+        if (val === 'sim' || val === 'nao' && id === 'medValueRow') {
+            if(id === 'medValueRow') val === 'nao' ? el.classList.remove('hidden') : el.classList.add('hidden');
+            else el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    }
+
+    function calcularPaz() {
+        // 1. Cálculo de Meses de Cobertura (Pontos)
+        let pontos = 0;
+        if (document.getElementById('dependents').value === 'sim') pontos += 3;
+        if (document.getElementById('shareBills').value === 'nao') pontos += 2;
+        
+        const estabilidade = document.getElementById('jobStability').value;
+        if (estabilidade === 'baixa') pontos += 4;
+        else if (estabilidade === 'media') pontos += 2;
+
+        let meses = 3;
+        if (pontos <= 2) meses = 3;
+        else if (pontos <= 5) meses = 6;
+        else if (pontos <= 8) meses = 9;
+        else meses = 12;
+
+        // 2. Cálculo de Valores
+        let somaAlta = 0;
+        let somaTotalDespesas = 0;
+
+        const vals = document.querySelectorAll('.exp-val');
+        const prios = document.querySelectorAll('.exp-priority');
+
+        vals.forEach((input, i) => {
+            let v = parseFloat(input.value) || 0;
+            let p = prios[i].value;
+            
+            somaTotalDespesas += v;
+            if (p === 'alta') somaAlta += v;
+        });
+
+        // 3. Condições Adicionais
+        let adicionalPlus = 0;
+        if (document.getElementById('hasCar').value === 'sim') {
+            adicionalPlus += (parseFloat(document.getElementById('carValue').value) || 0) * 0.04;
+        }
+        if (document.getElementById('hasHealthIns').value === 'nao') {
+            adicionalPlus += (parseFloat(document.getElementById('medValue').value) || 0);
+        }
+        if (document.getElementById('hasHouse').value === 'sim') {
+            adicionalPlus += (parseFloat(document.getElementById('houseValue').value) || 0);
+        }
+
+        // 4. Resultados Finais
+        const essencial = somaAlta * meses;
+        const plus = (somaTotalDespesas + adicionalPlus) * meses;
+
+        // Exibição
+        document.getElementById('resMeses').innerText = meses + " meses";
+        document.getElementById('resEssencial').innerText = essencial.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('resPlus').innerText = plus.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        
+        document.getElementById('resultArea').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
