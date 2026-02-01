@@ -46,7 +46,6 @@
         .section { margin-bottom: 40px; }
         h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; }
 
-        /* Estilo da Tabela de Gastos */
         .expense-header {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr;
@@ -66,7 +65,6 @@
             align-items: center;
         }
 
-        /* Tooltip Style */
         .info-icon {
             display: inline-block;
             width: 16px;
@@ -119,7 +117,6 @@
 
         button:hover { background: #1e421e; transform: translateY(-2px); }
 
-        /* Área de Resultados */
         #resultArea {
             margin-top: 40px;
             display: none;
@@ -199,6 +196,7 @@
                 <div id="carValueRow" class="hidden" style="margin-top:10px">
                     <label>Valor do veículo (tabela FIPE)</label>
                     <input type="number" id="carValue" placeholder="Ex: 50000">
+                    <p style="font-size: 0.75em; color: #666; margin-top:5px">* 4% deste valor será somado como reserva fixa para manutenção/imprevistos.</p>
                 </div>
             </div>
             <div class="card">
@@ -219,7 +217,7 @@
                     <option value="nao">Não</option>
                 </select>
                 <div id="medValueRow" class="hidden" style="margin-top:10px">
-                    <label>Média de gasto médico mensal</label>
+                    <label>Reserva total para gastos médicos</label>
                     <input type="number" id="medValue" placeholder="Consultas/Remédios">
                 </div>
             </div>
@@ -283,8 +281,12 @@
                 <span id="baseEssencial">R$ 0,00</span>
             </div>
             <div class="breakdown-item">
-                <span>Base Mensal Plus (Tudo + Adicionais):</span>
+                <span>Base Mensal Plus (Média + Baixa):</span>
                 <span id="basePlus">R$ 0,00</span>
+            </div>
+            <div class="breakdown-item" id="breakdownCarro" style="display:none; color: var(--accent);">
+                <span>Reserva Adicional Carro (4% FIPE):</span>
+                <span id="valCarro">R$ 0,00</span>
             </div>
             <p id="motivoMeses" style="margin-top:15px; font-style: italic; color: #555;"></p>
         </div>
@@ -331,7 +333,6 @@
     }
 
     function calcularPaz() {
-        // Lógica de Pontos
         let pontos = 0;
         let motivos = [];
         
@@ -348,7 +349,6 @@
         else if (pontos <= 8) meses = 9;
         else meses = 12;
 
-        // Cálculo Financeiro
         let somaAlta = 0;
         let somaTotal = 0;
         const vals = document.querySelectorAll('.exp-val');
@@ -361,32 +361,38 @@
         });
 
         let adicionalUnico = 0;
-        let adicionalMensal = 0;
 
+        // AJUSTE CARRO: Valor fixo de 4%, somado apenas no final do Plus
         if (document.getElementById('hasCar').value === 'sim') {
-            adicionalMensal += (parseFloat(document.getElementById('carValue').value) || 0) * 0.04 / 12; 
+            let valFipe = parseFloat(document.getElementById('carValue').value) || 0;
+            let reservaCarro = valFipe * 0.04;
+            adicionalUnico += reservaCarro;
+            document.getElementById('breakdownCarro').style.display = 'flex';
+            document.getElementById('valCarro').innerText = reservaCarro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        } else {
+            document.getElementById('breakdownCarro').style.display = 'none';
         }
+
         if (document.getElementById('hasHealthIns').value === 'nao') {
-            adicionalMensal += (parseFloat(document.getElementById('medValue').value) || 0);
+            adicionalUnico += (parseFloat(document.getElementById('medValue').value) || 0);
         }
         if (document.getElementById('hasHouse').value === 'sim') {
             adicionalUnico += (parseFloat(document.getElementById('houseValue').value) || 0);
         }
 
         const baseEssencial = somaAlta;
-        const basePlus = somaTotal + adicionalMensal;
+        const basePlusMensal = somaTotal; // Carro não entra mais aqui
 
         const totalEssencial = baseEssencial * meses;
-        const totalPlus = (basePlus * meses) + adicionalUnico;
+        const totalPlus = (basePlusMensal * meses) + adicionalUnico;
 
-        // UI
         const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         
         document.getElementById('resMeses').innerText = meses + " meses";
         document.getElementById('resEssencial').innerText = fmt(totalEssencial);
         document.getElementById('resPlus').innerText = fmt(totalPlus);
         document.getElementById('baseEssencial').innerText = fmt(baseEssencial) + " /mês";
-        document.getElementById('basePlus').innerText = fmt(basePlus) + " /mês";
+        document.getElementById('basePlus').innerText = fmt(basePlusMensal) + " /mês";
         
         let textoMotivo = "Sua cobertura foi definida em " + meses + " meses " + 
                           (motivos.length > 0 ? motivos.join(", ") : "devido ao seu perfil de baixo risco") + ".";
