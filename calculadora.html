@@ -124,7 +124,6 @@
 
         #resultArea { margin-top: 35px; display: none; }
         
-        /* Definições de Valor */
         .definition-card {
             background: #fafafa;
             padding: 15px;
@@ -196,7 +195,14 @@
             <div id="carValueRow" class="hidden" style="margin-top:15px">
                 <span class="field-label">Valor de mercado (FIPE)</span>
                 <input type="number" id="carValue" placeholder="Ex: 50000">
-                <span class="hint">* 4% deste valor será somado como reserva fixa para manutenção e impostos.</span>
+                
+                <div style="margin-top:15px">
+                    <label class="label-text" style="font-size: 0.9em;">O carro possui seguro?</label>
+                    <select id="hasCarInsurance">
+                        <option value="sim">Sim (Manter 4%)</option>
+                        <option value="nao">Não (Aumentar para 8%)</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="card">
@@ -251,54 +257,53 @@
         </div>
     </section>
 
+    <section class="section">
+        <h2>4. Plano de Construção da Reserva</h2>
+        <div class="card">
+            <div class="input-grid">
+                <div class="field-box">
+                    <span class="field-label">Já tenho guardado (R$)</span>
+                    <input type="number" id="initialSavings" placeholder="0,00">
+                </div>
+                <div class="field-box">
+                    <span class="field-label">Consigo guardar por mês (R$)</span>
+                    <input type="number" id="monthlyCapacity" placeholder="0,00">
+                </div>
+            </div>
+        </div>
+    </section>
+
     <button class="main-btn" onclick="calcularPaz()">Calcular Meu Valor da Paz</button>
 
     <div id="resultArea">
         <h2>Seu Diagnóstico de Paz</h2>
 
-        <div class="definition-card">
-            <strong>Valor da Paz Essencial:</strong> Focado na sua sobrevivência digna. Cobre apenas as despesas de prioridade ALTA pelo tempo necessário de fôlego.
-        </div>
         <div class="result-box">
             <span class="field-label">VALOR DA PAZ ESSENCIAL</span>
             <span class="result-value" id="resEssencial">R$ 0,00</span>
         </div>
 
-        <div class="definition-card" style="border-left: 5px solid var(--secondary);">
-            <strong>Valor da Paz Plus:</strong> O estado de paz absoluta. Cobre TODAS as suas despesas atuais e inclui reservas para proteção de bens (carro/casa) e saúde.
-        </div>
         <div class="result-box highlight">
             <span class="field-label" style="color: var(--primary)">VALOR DA PAZ ESSENCIAL PLUS</span>
             <span class="result-value" id="resPlus">R$ 0,00</span>
         </div>
 
+        <div class="result-box" style="border-color: var(--accent);">
+            <span class="field-label" style="color: var(--accent)">TEMPO PARA ALCANÇAR O ESSENCIAL</span>
+            <span class="result-value" id="timeToGoal" style="color: var(--accent);">-- meses</span>
+        </div>
+
         <button class="toggle-details" onclick="toggleDetails()">+ Entenda o cálculo</button>
 
         <div id="detailsBox" class="breakdown-box">
-            <strong>Como chegamos a esse valor:</strong>
-            
-            <div class="breakdown-item">
-                <span>Meses de Cobertura:</span>
-                <span id="resMeses">--</span>
-            </div>
-            <div style="font-size: 0.85em; color: #666; margin-bottom: 10px;" id="motivoMeses"></div>
-
-            <div class="breakdown-item">
-                <span>Custo Mensal (Essencial):</span>
-                <span id="baseEssencial">R$ 0,00</span>
-            </div>
-            <div class="breakdown-item">
-                <span>Custo Mensal (Plus):</span>
-                <span id="basePlus">R$ 0,00</span>
-            </div>
-            
+            <div class="breakdown-item"><span>Meses de Cobertura Sugeridos:</span><span id="resMeses">--</span></div>
+            <div class="breakdown-item"><span>Custo Mensal (Essencial):</span><span id="baseEssencial">R$ 0,00</span></div>
+            <div class="breakdown-item"><span>Custo Mensal (Plus):</span><span id="basePlus">R$ 0,00</span></div>
             <div id="breakdownCarro" class="breakdown-item" style="display:none; color: var(--accent);">
-                <span>Reserva Carro (4%):</span> <span id="valCarro">R$ 0,00</span>
+                <span>Reserva Carro (<span id="carPercentText">4</span>%):</span><span id="valCarro">R$ 0,00</span>
             </div>
-            
-            <p style="margin-top:15px; font-size: 0.85em; border-top: 1px solid #ddd; pt-10px;">
-                * O Valor da Paz Plus soma (Custo Mensal Plus × Meses) + Reservas Fixas (Carro, Casa e Saúde).
-            </p>
+            <div class="breakdown-item"><span>Dinheiro Inicial:</span><span id="detInitial">R$ 0,00</span></div>
+            <p id="motivoMeses" style="margin-top:15px; font-style: italic; color: #555;"></p>
         </div>
     </div>
 </div>
@@ -368,8 +373,8 @@
         if (document.getElementById('shareBills').value === 'nao') { pontos += 2; descPontos.push("+2 por arcar com a casa sozinho"); }
         
         const est = document.getElementById('jobStability').value;
-        if (est === 'baixa') { pontos += 4; descPontos.push("+4 pela baixa estabilidade profissional"); }
-        else if (est === 'media') { pontos += 2; descPontos.push("+2 pelo risco moderado (CLT)"); }
+        if (est === 'baixa') { pontos += 4; descPontos.push("+4 pela baixa estabilidade"); }
+        else if (est === 'media') { pontos += 2; descPontos.push("+2 pelo risco moderado"); }
 
         let meses = pontos <= 2 ? 3 : pontos <= 5 ? 6 : pontos <= 8 ? 9 : 12;
 
@@ -384,11 +389,16 @@
         });
 
         let fixoExtra = 0;
+        // Lógica do Carro com Seguro
         if (document.getElementById('hasCar').value === 'sim') {
-            let vCar = (parseFloat(document.getElementById('carValue').value) || 0) * 0.04;
-            fixoExtra += vCar;
+            let vCar = parseFloat(document.getElementById('carValue').value) || 0;
+            let percent = document.getElementById('hasCarInsurance').value === 'sim' ? 0.04 : 0.08;
+            let reservaCarro = vCar * percent;
+            fixoExtra += reservaCarro;
+            
             document.getElementById('breakdownCarro').style.display = 'flex';
-            document.getElementById('valCarro').innerText = vCar.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+            document.getElementById('carPercentText').innerText = percent * 100;
+            document.getElementById('valCarro').innerText = reservaCarro.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
         } else {
             document.getElementById('breakdownCarro').style.display = 'none';
         }
@@ -399,15 +409,33 @@
         const totalEssencial = somaAlta * meses;
         const totalPlus = (somaTotal * meses) + fixoExtra;
 
-        const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        // Cálculo do tempo para o alvo
+        const inicial = parseFloat(document.getElementById('initialSavings').value) || 0;
+        const aporte = parseFloat(document.getElementById('monthlyCapacity').value) || 0;
+        let tempoTexto = "Defina um aporte mensal";
         
+        if (aporte > 0) {
+            let falta = totalEssencial - inicial;
+            if (falta <= 0) {
+                tempoTexto = "Já alcançado!";
+            } else {
+                let m = Math.ceil(falta / aporte);
+                tempoTexto = m + (m === 1 ? " mês" : " meses");
+            }
+        } else if (inicial >= totalEssencial) {
+            tempoTexto = "Já alcançado!";
+        }
+
+        const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         document.getElementById('resMeses').innerText = meses + " meses";
         document.getElementById('resEssencial').innerText = fmt(totalEssencial);
         document.getElementById('resPlus').innerText = fmt(totalPlus);
         document.getElementById('baseEssencial').innerText = fmt(somaAlta) + " /mês";
         document.getElementById('basePlus').innerText = fmt(somaTotal) + " /mês";
+        document.getElementById('detInitial').innerText = fmt(inicial);
+        document.getElementById('timeToGoal').innerText = tempoTexto;
         
-        document.getElementById('motivoMeses').innerText = `Seu perfil atingiu ${pontos} pontos (${descPontos.join(", ") || "perfil de baixo risco"}), o que exige ${meses} meses de reserva.`;
+        document.getElementById('motivoMeses').innerText = `Seu perfil atingiu ${pontos} pontos (${descPontos.join(", ") || "perfil estável"}), exigindo ${meses} meses de reserva.`;
 
         document.getElementById('resultArea').style.display = 'block';
         window.scrollTo({ top: document.getElementById('resultArea').offsetTop, behavior: 'smooth' });
