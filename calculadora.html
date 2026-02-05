@@ -124,15 +124,6 @@
 
         #resultArea { margin-top: 35px; display: none; }
         
-        .definition-card {
-            background: #fafafa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-            border: 1px solid #ddd;
-        }
-
         .result-box { padding: 20px; border-radius: 12px; text-align: center; background: #fff; border: 2px solid #eee; margin-bottom: 15px; }
         .result-box.highlight { border-color: var(--secondary); background: #f0fdf4; }
         .result-value { font-size: 1.7em; font-weight: bold; color: var(--primary); display: block; margin-top: 5px; }
@@ -199,10 +190,11 @@
                 <div style="margin-top:15px">
                     <label class="label-text" style="font-size: 0.9em;">O carro possui seguro?</label>
                     <select id="hasCarInsurance">
-                        <option value="sim">Sim (Manter 4%)</option>
-                        <option value="nao">Não (Aumentar para 8%)</option>
+                        <option value="sim">Sim (Reservar 4% do valor)</option>
+                        <option value="nao">Não (Reservar 8% do valor)</option>
                     </select>
                 </div>
+                <span class="hint">* Esta porcentagem será somada como reserva fixa para cobrir manutenções e riscos do veículo.</span>
             </div>
         </div>
         <div class="card">
@@ -389,7 +381,6 @@
         });
 
         let fixoExtra = 0;
-        // Lógica do Carro com Seguro
         if (document.getElementById('hasCar').value === 'sim') {
             let vCar = parseFloat(document.getElementById('carValue').value) || 0;
             let percent = document.getElementById('hasCarInsurance').value === 'sim' ? 0.04 : 0.08;
@@ -409,7 +400,6 @@
         const totalEssencial = somaAlta * meses;
         const totalPlus = (somaTotal * meses) + fixoExtra;
 
-        // Cálculo do tempo para o alvo
         const inicial = parseFloat(document.getElementById('initialSavings').value) || 0;
         const aporte = parseFloat(document.getElementById('monthlyCapacity').value) || 0;
         let tempoTexto = "Defina um aporte mensal";
