@@ -1,43 +1,183 @@
-<form action="https://formspree.io/f/xqedpkwy" method="POST">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicie sua Jornada | Finanças com Propósito</title>
+    <style>
+        :root {
+            --primary: #2c5f2d;
+            --secondary: #97bc62;
+            --bg: #f0f4f0;
+            --text: #2d3436;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
 
-    <div class="form-group">
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-        <label>Qual sua renda mensal aproximada?</label>
+        .card {
+            background: var(--white);
+            max-width: 550px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
 
-        <select name="renda" required>
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
 
-            <option value="high">Acima de R$ 15.000</option>
+        .progress-fill {
+            width: 60%; 
+            height: 100%;
+            background: var(--secondary);
+            transition: 0.5s ease;
+        }
 
-            <option value="mid">R$ 5.000 a R$ 15.000</option>
+        h1 { color: var(--primary); font-size: 1.6em; margin-bottom: 10px; text-align: center; }
+        p.subtitle { text-align: center; color: #636e72; margin-bottom: 30px; font-size: 0.9em; }
 
-            <option value="low">Até R$ 5.000</option>
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+        }
 
-        </select>
+        .video-placeholder {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #1a3a1a, #2c5f2d);
+            color: white; text-align: center; padding: 20px;
+        }
 
-    </div>
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.85em; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
 
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #edf2f7;
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text);
+            background: #f8fafc;
+            transition: 0.3s;
+            outline: none;
+            box-sizing: border-box;
+        }
 
+        input:focus, select:focus { border-color: var(--secondary); background: #fff; }
 
-    <div class="form-group">
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
 
-        <label>Interesse em acompanhamento?</label>
+        .btn-submit:hover { background: #1e421e; transform: translateY(-2px); }
 
-        <select name="interesse" required>
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 
-            <option value="sim">Sim, estou pronto</option>
+        @media (max-width: 480px) {
+            .card { padding: 25px; }
+            .row { grid-template-columns: 1fr; gap: 0; }
+        }
+    </style>
+</head>
+<body>
 
-            <option value="talvez">Gostaria de entender melhor</option>
-
-        </select>
-
-    </div>
-
-
-
-    <input type="hidden" name="_next" value="https://edvaldo-p-santos.github.io/calculadora.html">
-
+<div class="card">
+    <div class="progress-bar"><div class="progress-fill"></div></div>
     
+    <h1>Inicie sua Construção</h1>
+    <p class="subtitle">Assista ao vídeo e preencha os dados abaixo para liberar seu acesso à Calculadora do Valor da Paz.</p>
 
-    <button type="submit" class="btn-submit">Liberar Calculadora do Valor da Paz</button>
+    <div class="video-container">
+        <div class="video-placeholder">
+            <div>
+                <strong>[Espaço para seu Vídeo]</strong><br>
+                <small>Apresentação da Metodologia</small>
+            </div>
+        </div>
+    </div>
 
-</form>
+    <form action="https://formspree.io/f/SUA_CHAVE_AQUI" method="POST">
+        
+        <div class="form-group">
+            <label>Seu Nome</label>
+            <input type="text" name="nome" placeholder="Como prefere ser chamado?" required>
+        </div>
+
+        <div class="form-group">
+            <label>WhatsApp (com DDD)</label>
+            <input type="tel" name="whatsapp" placeholder="(00) 00000-0000" required>
+        </div>
+
+        <div class="form-group">
+            <label>Sua renda mensal aproximada</label>
+            <select name="renda" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="ate-4k">Até R$ 4.000</option>
+                <option value="4k-8k">Entre R$ 4.000 e R$ 8.000</option>
+                <option value="8k-12k">Entre R$ 8.000 e R$ 12.000</option>
+                <option value="mais-12k">Mais de R$ 12.000</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Já tentou algum método de organização?</label>
+            <select name="tentativa_anterior" required>
+                <option value="" disabled selected>Selecione...</option>
+                <option value="nunca">Não, nunca tentei</option>
+                <option value="sozinho">Sim, tentei por conta própria</option>
+                <option value="cursos">Sim, já fiz cursos/mentorias</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Interesse em acompanhamento personalizado?</label>
+            <select name="interesse_mentoria" required>
+                <option value="sim">Sim, quero acelerar meu processo</option>
+                <option value="talvez">Gostaria de entender como funciona</option>
+                <option value="apenas_calculo">No momento, apenas o cálculo</option>
+            </select>
+        </div>
+
+        <input type="hidden" name="_next" value="https://edvaldo-p-santos.github.io/calculadora.html">
+        
+        <button type="submit" class="btn-submit">Avançar para Calculadora →</button>
+    </form>
+</div>
+
+</body>
+</html>
