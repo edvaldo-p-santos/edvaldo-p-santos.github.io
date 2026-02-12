@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora do Valor da Paz | Finanças com Propósito</title>
+    <title>Defina seu Valor da Paz | Finanças com Propósito</title>
     <style>
         :root {
             --primary: #2c5f2d;
@@ -32,121 +32,196 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .header-box { text-align: center; margin-bottom: 25px; }
-        h1 { color: var(--primary); font-size: 1.8em; margin-bottom: 5px; }
+        .header-box { text-align: center; margin-bottom: 30px; }
+        h1 { color: var(--primary); font-size: 1.7em; margin-bottom: 10px; line-height: 1.2; }
         
-        /* Espaço para Vídeo */
+        /* Estilo do Vídeo */
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
             background: #000;
             border-radius: 12px;
-            margin-bottom: 35px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .video-container iframe, .video-placeholder {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(45deg, #1a3a1a, #2c5f2d);
+            color: white; text-align: center;
+        }
+
+        .explanation-card {
+            background: #eef7ee;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+            font-size: 0.95em;
+            text-align: justify;
+        }
+
+        .section { margin-bottom: 35px; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; font-size: 1.3em; }
+
+        .expense-row {
+            background: #fdfdfd;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+        }
+
+        .label-group { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .label-text { font-weight: bold; font-size: 1em; color: var(--primary); }
+
+        .info-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            text-align: center;
-            background: linear-gradient(45deg, #1a3a1a, #2c5f2d);
         }
 
-        .section { margin-bottom: 40px; }
-        h2 { color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 5px; font-size: 1.4em; }
+        .info-text {
+            display: none;
+            background: #f0f4f0;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 0.85em;
+            color: #444;
+            border-radius: 6px;
+            border-left: 3px solid var(--secondary);
+        }
 
-        .card { background: #fdfdfd; padding: 20px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 20px; }
-        .expense-row { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #f0f0f0; }
-        
-        .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .field-label { font-size: 0.75em; font-weight: bold; color: #888; text-transform: uppercase; margin-bottom: 5px; display: block; }
-        
+        .input-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px; 
+        }
+
+        .field-box { display: flex; flex-direction: column; }
+        .field-label { font-size: 0.75em; font-weight: bold; text-transform: uppercase; color: #888; margin-bottom: 5px; }
+
         input, select {
             padding: 12px;
             border: 1px solid #ccc;
             border-radius: 6px;
             width: 100%;
-            font-size: 16px;
+            font-size: 16px; 
             box-sizing: border-box;
         }
 
-        .main-btn {
+        .card { background: #fff; padding: 20px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 15px; }
+        .hint { font-size: 0.8em; color: #666; margin-top: 5px; display: block; }
+
+        button.main-btn {
             display: block;
             width: 100%;
-            padding: 22px;
+            padding: 20px;
             background: var(--primary);
             color: white;
             border: none;
             border-radius: 50px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
             margin-top: 20px;
+            transition: 0.3s;
         }
 
-        .main-btn:hover { background: #1e421e; transform: translateY(-2px); }
+        button.main-btn:hover { background: #1e421e; }
 
-        /* Resultados */
-        #resultArea { margin-top: 40px; display: none; }
-        .result-box { padding: 25px; border-radius: 12px; text-align: center; background: #fff; border: 2px solid #eee; margin-bottom: 15px; }
-        .result-box.highlight { border-color: var(--secondary); background: #f0fdf4; }
-        .result-value { font-size: 2em; font-weight: bold; color: var(--primary); display: block; margin-top: 5px; }
-
-        /* Convite Final Suave */
-        .offer-card {
-            background: #fff;
-            border: 2px solid var(--primary);
-            padding: 30px;
-            border-radius: 15px;
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .offer-card h3 { color: var(--primary); margin-top: 0; }
-        .offer-card p { font-size: 1.05em; color: #555; margin-bottom: 25px; }
+        #resultArea { margin-top: 35px; display: none; }
         
-        .cta-link {
-            display: inline-block;
+        .result-box { padding: 20px; border-radius: 12px; text-align: center; background: #fff; border: 2px solid #eee; margin-bottom: 15px; }
+        .result-box.highlight { border-color: var(--secondary); background: #f0fdf4; }
+        .result-value { font-size: 1.7em; font-weight: bold; color: var(--primary); display: block; margin-top: 5px; }
+
+        .toggle-details {
+            display: block;
+            width: 100%;
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .breakdown-box { 
+            display: none;
+            background: #f8fafc; 
+            padding: 20px; 
+            border-radius: 12px; 
+            font-size: 0.9em; 
+            animation: fadeIn 0.3s;
+        }
+
+        .breakdown-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #ddd; }
+        .breakdown-item span:first-child { font-weight: bold; color: #555; }
+
+        /* Fechamento Final */
+        .fechamento-container {
+            display: none;
+            margin-top: 40px;
+            padding: 30px;
             background: var(--primary);
             color: white;
-            padding: 18px 35px;
+            border-radius: 15px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in;
+        }
+        .fechamento-container h3 { margin-top: 0; font-size: 1.5em; }
+        .btn-final {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 35px;
+            background: var(--secondary);
+            color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(44, 95, 45, 0.3);
             transition: 0.3s;
         }
-
-        .cta-link:hover { transform: scale(1.05); }
-
+        .btn-final:hover { transform: scale(1.05); }
+        
         .hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-box">
-        <h1>Sua Jornada para o Valor da Paz</h1>
-        <p style="color: #666;">Desenvolvido por Ed Santos | Finanças com Propósito</p>
+        <h1>Defina seu Valor da Paz | Finanças com Propósito</h1>
+        <p style="font-size: 0.9em; color: #666;">Por Edvaldo Santos</p>
     </div>
 
     <div class="video-container">
         <div class="video-placeholder">
             <div>
-                <strong>Assista: Como usar esta calculadora</strong><br>
+                <strong>Assista: Como utilizar esta ferramenta</strong><br>
                 <small>(Espaço para o seu vídeo explicando a metodologia)</small>
             </div>
         </div>
+    </div>
+
+    <div class="explanation-card">
+        O <strong>Valor da Paz</strong> faz parte da metodologia <em>Finanças com Propósito</em>, que entende que o sofrimento é muitas vezes uma construção da nossa mente. Aqui, o que chamam de "emergência" é chamado de paz. Um momento que torna-se um momento sagrado de conexão consigo mesmo e de reencontro com sua paz interior. <br><br>
+        Este montante não é apenas um número, mas o fôlego ideal que garante sua tranquilidade. É a segurança calculada especificamente para proteger sua dignidade e estilo de vida durante transições, permitindo que você atravesse desafios com clareza e presença, sem o peso do desespero.
     </div>
 
     <section class="section">
@@ -155,153 +230,268 @@
     </section>
 
     <section class="section">
-        <h2>2. Qualificação Estratégica</h2>
+        <h2>2. Condições Adicionais</h2>
         <div class="card">
-            <div class="field-box" style="margin-bottom: 20px;">
-                <span class="field-label">Sua Renda Mensal Aproximada (R$)</span>
-                <select id="userIncome">
-                    <option value="low">Até R$ 5.000</option>
-                    <option value="mid">R$ 5.000 a R$ 15.000</option>
-                    <option value="high">R$ 15.000 a R$ 30.000</option>
-                    <option value="very_high">Acima de R$ 30.000</option>
-                </select>
+            <label class="label-text">Possui Carro?</label>
+            <select id="hasCar" onchange="toggleInput('carValueRow', this.value)">
+                <option value="nao">Não</option>
+                <option value="sim">Sim</option>
+            </select>
+            <div id="carValueRow" class="hidden" style="margin-top:15px">
+                <span class="field-label">Valor de mercado (FIPE)</span>
+                <input type="number" id="carValue" placeholder="Ex: 50000">
+                
+                <div style="margin-top:15px">
+                    <label class="label-text" style="font-size: 0.9em;">O carro possui seguro?</label>
+                    <select id="hasCarInsurance">
+                        <option value="sim">Sim (Reservar 4% do valor)</option>
+                        <option value="nao">Não (Reservar 8% do valor)</option>
+                    </select>
+                </div>
+                <span class="hint">* Esta porcentagem será somada como reserva fixa para cobrir manutenções e riscos do veículo.</span>
             </div>
-            
-            <div class="field-box" style="margin-bottom: 20px;">
-                <span class="field-label">Você já tentou algum método de organização financeira antes?</span>
-                <select id="previousAttempt">
-                    <option value="no">Não, nunca tentei</option>
-                    <option value="yes_self">Sim, planilhas ou apps por conta própria</option>
-                    <option value="yes_pro">Sim, já fiz cursos ou mentorias</option>
-                </select>
+        </div>
+        <div class="card">
+            <label class="label-text">Imprevistos com Imóvel (Casa)??</label>
+            <span class="hint">Adicione se faz sentido considerar esse imprevisto na sua vida no momento (ex: reparos urgentes).</span>
+            <select id="hasHouse" onchange="toggleInput('houseValueRow', this.value)">
+                <option value="nao">Não</option>
+                <option value="sim">Sim</option>
+            </select>
+            <div id="houseValueRow" class="hidden" style="margin-top:15px">
+                <span class="field-label">Valor sugerido para reserva de casa</span>
+                <input type="number" id="houseValue" placeholder="Ex: 5000">
             </div>
-
-            <div class="field-box">
-                <span class="field-label">Você sente que precisa de um acompanhamento para acelerar seu processo?</span>
-                <select id="interestMentorship">
-                    <option value="talvez">Gostaria de entender melhor como funciona</option>
-                    <option value="sim">Sim, estou pronto para avançar</option>
-                    <option value="agora_nao">No momento, quero apenas fazer o cálculo</option>
-                </select>
+        </div>
+        <div class="card">
+            <label class="label-text">Possui Convênio Médico?</label>
+            <select id="hasHealthIns" onchange="toggleInput('medValueRow', this.value)">
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+            <div id="medValueRow" class="hidden" style="margin-top:15px">
+                <span class="field-label">Reserva para saúde (sem convênio)</span>
+                <input type="number" id="medValue" placeholder="Ex: 2000">
             </div>
         </div>
     </section>
 
     <section class="section">
-        <h2>3. Detalhes de Bens e Plano</h2>
+        <h2>3. Estilo de Vida</h2>
+        <div class="card">
+            <label class="label-text">Tem dependentes? (Ex: filhos)</label>
+            <select id="dependents">
+                <option value="nao">Não</option>
+                <option value="sim">Sim</option>
+            </select>
+        </div>
+        <div class="card">
+            <label class="label-text">Divide despesas da casa?</label>
+            <span class="hint" style="margin-bottom:10px">Coloque SIM se, na sua ausência, alguém poderia cobrir todos ou mais da metade dos gastos.</span>
+            <select id="shareBills">
+                <option value="sim">Sim</option>
+                <option value="nao">Não</option>
+            </select>
+        </div>
+        <div class="card">
+            <label class="label-text">Estabilidade do Emprego</label>
+            <select id="jobStability">
+                <option value="alta">Alta (Ex: Servidor Público)</option>
+                <option value="media">Média (Ex: CLT estável)</option>
+                <option value="baixa">Baixa (Ex: Autônomo / Empresário)</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>4. Plano de Construção da Reserva</h2>
         <div class="card">
             <div class="input-grid">
                 <div class="field-box">
-                    <span class="field-label">Possui Carro?</span>
-                    <select id="hasCar" onchange="toggleInput('carRow', this.value)">
-                        <option value="nao">Não</option>
-                        <option value="sim">Sim</option>
-                    </select>
-                </div>
-                <div class="field-box">
-                    <span class="field-label">Já tem algo guardado (R$)</span>
+                    <span class="field-label">Já tenho guardado (R$)</span>
                     <input type="number" id="initialSavings" placeholder="0,00">
                 </div>
-            </div>
-
-            <div id="carRow" class="hidden" style="margin-top:20px; border-top: 1px solid #eee; padding-top: 15px;">
-                <div class="input-grid">
-                    <div class="field-box">
-                        <span class="field-label">Valor do Veículo (FIPE)</span>
-                        <input type="number" id="carValue" placeholder="Ex: 60000">
-                    </div>
-                    <div class="field-box">
-                        <span class="field-label">Tem seguro?</span>
-                        <select id="hasInsurance">
-                            <option value="sim">Sim (4%)</option>
-                            <option value="nao">Não (8%)</option>
-                        </select>
-                    </div>
+                <div class="field-box">
+                    <span class="field-label">Consigo guardar por mês (R$)</span>
+                    <input type="number" id="monthlyCapacity" placeholder="0,00">
                 </div>
             </div>
         </div>
-
-        <div class="card">
-            <span class="field-label">Quanto consegue guardar por mês para a Paz (R$)</span>
-            <input type="number" id="monthlyContribution" placeholder="0,00">
-        </div>
-        
-        <input type="hidden" id="jobStability" value="media">
-        <input type="hidden" id="dependents" value="nao">
     </section>
 
-    <button class="main-btn" onclick="calcularTudo()">Descobrir Meu Valor da Paz</button>
+    <button class="main-btn" onclick="calcularPaz()">Calcular Meu Valor da Paz</button>
 
     <div id="resultArea">
+        <h2>Seu Diagnóstico de Paz</h2>
+
+        <div class="result-box">
+            <span class="field-label">VALOR DA PAZ ESSENCIAL</span>
+            <span class="result-value" id="resEssencial">R$ 0,00</span>
+        </div>
+
         <div class="result-box highlight">
-            <span class="field-label" style="color: var(--primary)">SEU VALOR DA PAZ PLUS</span>
-            <span class="result-value" id="finalValue">R$ 0,00</span>
+            <span class="field-label" style="color: var(--primary)">VALOR DA PAZ ESSENCIAL PLUS</span>
+            <span class="result-value" id="resPlus">R$ 0,00</span>
         </div>
 
         <div class="result-box" style="border-color: var(--accent);">
-            <span class="field-label" style="color: var(--accent)">TEMPO PARA ALCANÇAR</span>
-            <span class="result-value" id="finalTime" style="color: var(--accent);">-- meses</span>
+            <span class="field-label" style="color: var(--accent)">TEMPO PARA ALCANÇAR O ESSENCIAL</span>
+            <span class="result-value" id="timeToGoal" style="color: var(--accent);">-- meses</span>
         </div>
 
-        <div class="offer-card">
-            <h3 id="offerTitle">Faltam apenas alguns passos para sua tranquilidade...</h3>
-            <p id="offerText">Construir um fôlego financeiro de R$ 50.000 em 12 meses exige mais do que apenas economia; exige estratégia e mentalidade.</p>
-            <a href="https://docs.google.com/forms/d/174zpookO3byFTeIJ6v2kuNlNq3jgUR5-3AkxBnFdHRQ/viewform" target="_blank" class="cta-link">Quero acelerar minha construção da paz</a>
+        <button class="toggle-details" onclick="toggleDetails()">+ Entenda o cálculo</button>
+
+        <div id="detailsBox" class="breakdown-box">
+            <div class="breakdown-item"><span>Meses de Cobertura Sugeridos:</span><span id="resMeses">--</span></div>
+            <div class="breakdown-item"><span>Custo Mensal (Essencial):</span><span id="baseEssencial">R$ 0,00</span></div>
+            <div class="breakdown-item"><span>Custo Mensal (Plus):</span><span id="basePlus">R$ 0,00</span></div>
+            <div id="breakdownCarro" class="breakdown-item" style="display:none; color: var(--accent);">
+                <span>Reserva Carro (<span id="carPercentText">4</span>%):</span><span id="valCarro">R$ 0,00</span>
+            </div>
+            <div class="breakdown-item"><span>Dinheiro Inicial:</span><span id="detInitial">R$ 0,00</span></div>
+            <p id="motivoMeses" style="margin-top:15px; font-style: italic; color: #555;"></p>
+        </div>
+
+        <div id="fechamento" class="fechamento-container">
+            <h3>Faltam apenas alguns passos para sua tranquilidade...</h3>
+            <p>Descobrir o seu número é apenas o começo da jornada. Se você sente que precisa de ajuda para acelerar esse tempo de construção ou organizar sua mentalidade para o próximo nível, eu posso te guiar pessoalmente.</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSclK7H8YfJm2YhU9yXv4fFk4M-uFqM9IuTqK-E4v_G_5Y_OzA/viewform" target="_blank" class="btn-final">Quero Acompanhamento Personalizado</a>
         </div>
     </div>
 </div>
 
 <script>
-    // Gerar categorias de despesas
-    const cats = ["Moradia", "Consumo", "Transporte", "Saúde", "Dívidas", "Alimentação"];
+    const categorias = [
+        { n: "Moradia", d: "Aluguel, IPTU, condomínio e taxas fixas." },
+        { n: "Contas de Consumo", d: "Luz, água, gás, internet e celular." },
+        { n: "Seguros", d: "Plano de saúde, seguro auto e vida." },
+        { n: "Transporte", d: "Combustível, passagens, Uber e pedágio." },
+        { n: "Dívidas", d: "Parcelas de financiamentos e empréstimos." },
+        { n: "Alimentação", d: "Supermercado e feira (essencial)." },
+        { n: "Outros Essenciais", d: "Farmácia, escola ou uniformes." },
+        { n: "Lazer e Streamings", d: "Netflix, jantares e assinaturas." },
+        { n: "Corpo e Saúde", d: "Academia e cuidados pessoais." }
+    ];
+
     const list = document.getElementById('expenseList');
-    cats.forEach(c => {
+    categorias.forEach((cat, i) => {
         const div = document.createElement('div');
         div.className = 'expense-row';
-        div.innerHTML = `<span class="field-label">${c}</span><input type="number" class="exp-val" placeholder="R$ 0,00">`;
+        div.innerHTML = `
+            <div class="label-group">
+                <span class="label-text">${cat.n}</span>
+                <button class="info-btn" onclick="toggleInfo(${i})">?</button>
+            </div>
+            <div id="info-${i}" class="info-text">${cat.d}</div>
+            <div class="input-grid">
+                <div class="field-box">
+                    <span class="field-label">Valor (R$)</span>
+                    <input type="number" class="exp-val" placeholder="0,00">
+                </div>
+                <div class="field-box">
+                    <span class="field-label">Prioridade</span>
+                    <select class="exp-priority">
+                        <option value="alta">Alta</option>
+                        <option value="media">Média</option>
+                        <option value="baixa">Baixa</option>
+                    </select>
+                </div>
+            </div>
+        `;
         list.appendChild(div);
     });
 
-    function toggleInput(id, val) {
-        document.getElementById(id).className = (val === 'sim' ? '' : 'hidden');
+    function toggleInfo(i) {
+        const el = document.getElementById(`info-${i}`);
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
     }
 
-    function calcularTudo() {
-        let somaMensal = 0;
-        document.querySelectorAll('.exp-val').forEach(i => somaMensal += (parseFloat(i.value) || 0));
+    function toggleDetails() {
+        const el = document.getElementById('detailsBox');
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function toggleInput(id, val) {
+        const el = document.getElementById(id);
+        if (id === 'medValueRow') val === 'nao' ? el.classList.remove('hidden') : el.classList.add('hidden');
+        else val === 'sim' ? el.classList.remove('hidden') : el.classList.add('hidden');
+    }
+
+    function calcularPaz() {
+        let pontos = 0;
+        let descPontos = [];
         
-        let meses = 6; // Fixo para o exemplo, pode integrar a lógica de pontos anterior
-        let reservaBase = somaMensal * meses;
+        if (document.getElementById('dependents').value === 'sim') { pontos += 3; descPontos.push("+3 por dependentes"); }
+        if (document.getElementById('shareBills').value === 'nao') { pontos += 2; descPontos.push("+2 por arcar com a casa sozinho"); }
         
-        let extra = 0;
+        const est = document.getElementById('jobStability').value;
+        if (est === 'baixa') { pontos += 4; descPontos.push("+4 pela baixa estabilidade"); }
+        else if (est === 'media') { pontos += 2; descPontos.push("+2 pelo risco moderado"); }
+
+        let meses = pontos <= 2 ? 3 : pontos <= 5 ? 6 : pontos <= 8 ? 9 : 12;
+
+        let somaAlta = 0, somaTotal = 0;
+        const vals = document.querySelectorAll('.exp-val');
+        const prios = document.querySelectorAll('.exp-priority');
+
+        vals.forEach((input, i) => {
+            let v = parseFloat(input.value) || 0;
+            somaTotal += v;
+            if (prios[i].value === 'alta') somaAlta += v;
+        });
+
+        let fixoExtra = 0;
         if (document.getElementById('hasCar').value === 'sim') {
-            let p = document.getElementById('hasInsurance').value === 'sim' ? 0.04 : 0.08;
-            extra = (parseFloat(document.getElementById('carValue').value) || 0) * p;
+            let vCar = parseFloat(document.getElementById('carValue').value) || 0;
+            let percent = document.getElementById('hasCarInsurance').value === 'sim' ? 0.04 : 0.08;
+            let reservaCarro = vCar * percent;
+            fixoExtra += reservaCarro;
+            
+            document.getElementById('breakdownCarro').style.display = 'flex';
+            document.getElementById('carPercentText').innerText = percent * 100;
+            document.getElementById('valCarro').innerText = reservaCarro.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+        } else {
+            document.getElementById('breakdownCarro').style.display = 'none';
         }
 
-        const totalPaz = reservaBase + extra;
+        if (document.getElementById('hasHealthIns').value === 'nao') fixoExtra += (parseFloat(document.getElementById('medValue').value) || 0);
+        if (document.getElementById('hasHouse').value === 'sim') fixoExtra += (parseFloat(document.getElementById('houseValue').value) || 0);
+
+        const totalEssencial = somaAlta * meses;
+        const totalPlus = (somaTotal * meses) + fixoExtra;
+
         const inicial = parseFloat(document.getElementById('initialSavings').value) || 0;
-        const aporte = parseFloat(document.getElementById('monthlyContribution').value) || 0;
+        const aporte = parseFloat(document.getElementById('monthlyCapacity').value) || 0;
+        let tempoTexto = "Defina um aporte mensal";
         
-        let tempo = (aporte > 0) ? Math.ceil((totalPaz - inicial) / aporte) : "--";
-        if (tempo < 0) tempo = "Já alcançado!";
+        if (aporte > 0) {
+            let falta = totalEssencial - inicial;
+            if (falta <= 0) {
+                tempoTexto = "Já alcançado!";
+            } else {
+                let m = Math.ceil(falta / aporte);
+                tempoTexto = m + (m === 1 ? " mês" : " meses");
+            }
+        } else if (inicial >= totalEssencial) {
+            tempoTexto = "Já alcançado!";
+        }
 
         const fmt = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('resMeses').innerText = meses + " meses";
+        document.getElementById('resEssencial').innerText = fmt(totalEssencial);
+        document.getElementById('resPlus').innerText = fmt(totalPlus);
+        document.getElementById('baseEssencial').innerText = fmt(somaAlta) + " /mês";
+        document.getElementById('basePlus').innerText = fmt(somaTotal) + " /mês";
+        document.getElementById('detInitial').innerText = fmt(inicial);
+        document.getElementById('timeToGoal').innerText = tempoTexto;
         
-        document.getElementById('finalValue').innerText = fmt(totalPaz);
-        document.getElementById('finalTime').innerText = (tempo === "Já alcançado!" ? tempo : tempo + " meses");
-        
-        // Ajuste Suave do Texto de Oferta
-        const income = document.getElementById('userIncome').value;
-        if (income === 'high' || income === 'very_high') {
-            document.getElementById('offerTitle').innerText = "Oportunidade de Otimização Financeira";
-            document.getElementById('offerText').innerText = `Com o seu perfil, atingir o Valor da Paz de ${fmt(totalPaz)} em ${tempo} meses é um excelente ponto de partida. Vamos desenhar uma estratégia para que esse capital também trabalhe para o seu propósito?`;
-        } else {
-            document.getElementById('offerText').innerText = `Percebeu que faltam aproximadamente ${tempo} meses para sua paz absoluta? O caminho sozinho pode ser longo, mas com o acompanhamento certo, podemos encurtar essa distância.`;
-        }
+        document.getElementById('motivoMeses').innerText = `Seu perfil atingiu ${pontos} pontos (${descPontos.join(", ") || "perfil estável"}), exigindo ${meses} meses de reserva.`;
 
+        // MOSTRAR RESULTADOS E FECHAMENTO
         document.getElementById('resultArea').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('resultArea').offsetTop - 20, behavior: 'smooth' });
+        document.getElementById('fechamento').style.display = 'block';
+        
+        window.scrollTo({ top: document.getElementById('resultArea').offsetTop, behavior: 'smooth' });
     }
 </script>
 </body>
