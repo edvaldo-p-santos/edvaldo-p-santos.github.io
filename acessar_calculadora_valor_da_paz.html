@@ -1,77 +1,43 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Valor da Paz | Finanças com Propósito</title>
-    <style>
-        :root { --primary: #2c5f2d; --secondary: #97bc62; --bg: #f4f7f6; --text: #333; }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; margin: 0; padding: 20px; }
-        .container { max-width: 700px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        h1 { color: var(--primary); text-align: center; }
-        .video-box { background: #000; color: white; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin: 30px 0; border: 2px solid var(--primary); }
-        .form-group { margin-bottom: 20px; }
-        label { font-weight: bold; display: block; margin-bottom: 5px; color: var(--primary); }
-        select, input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
-        .btn-submit { display: block; width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1.1em; transition: 0.3s; }
-        .btn-submit:hover { background: #1e421e; }
-        #linkCalculadora { display: none; text-align: center; margin-top: 25px; padding: 20px; background: #eef7ee; border-radius: 10px; border: 1px solid var(--secondary); }
-        .calc-btn { display: inline-block; padding: 15px 30px; background: var(--secondary); color: white; text-decoration: none; border-radius: 30px; font-weight: bold; margin-top: 10px; }
-    </style>
-</head>
-<body>
+<form action="https://formspree.io/f/xqedpkwy" method="POST">
 
-<div class="container">
-    <h1>Prepare-se para encontrar sua Paz</h1>
+    <div class="form-group">
 
-    <p style="text-align: center; color: #666;">Antes de liberarmos seu acesso à calculadora, responda brevemente:</p>
+        <label>Qual sua renda mensal aproximada?</label>
 
-    <div id="captureForm">
-        <div class="form-group">
-            <label>Qual sua renda mensal aproximada?</label>
-            <select id="renda">
-                <option value="">Selecione...</option>
-                <option value="high">Acima de R$ 7.000</option>
-                <option value="mid">R$ 4.000 a R$ 7.000</option>
-                <option value="low">Até R$ 4.000</option>
-            </select>
-        </div>
+        <select name="renda" required>
 
-        <div class="form-group">
-            <label>Já tentou algum método de organização financeira antes?</label>
-            <select id="tentativa">
-                <option value="não">Não, nunca</option>
-                <option value="sozinho">Sim, por conta própria</option>
-                <option value="mentoria">Sim, já fiz cursos/mentorias</option>
-            </select>
-        </div>
+            <option value="high">Acima de R$ 15.000</option>
 
-        <div class="form-group">
-            <label>Tem interesse em um acompanhamento personalizado?</label>
-            <select id="interesse">
-                <option value="sim">Sim, estou pronto</option>
-                <option value="talvez">Gostaria de entender melhor</option>
-                <option value="não">Apenas o cálculo por enquanto</option>
-            </select>
-        </div>
+            <option value="mid">R$ 5.000 a R$ 15.000</option>
 
-        <button class="btn-submit" onclick="liberarAcesso()">Liberar Calculadora do Valor da Paz</button>
+            <option value="low">Até R$ 5.000</option>
+
+        </select>
+
     </div>
 
-    <div id="linkCalculadora">
-        <p><strong>Acesso Liberado!</strong></p>
-        <p>Clique abaixo para definir seu fôlego financeiro ideal.</p>
-        <a href="calculadora.html" class="calc-btn">Acessar Calculadora →</a>
+
+
+    <div class="form-group">
+
+        <label>Interesse em acompanhamento?</label>
+
+        <select name="interesse" required>
+
+            <option value="sim">Sim, estou pronto</option>
+
+            <option value="talvez">Gostaria de entender melhor</option>
+
+        </select>
+
     </div>
-</div>
 
-<script>
-    function liberarAcesso() {
-        // Aqui você poderia integrar o envio desses dados para seu e-mail ou planilha
-        document.getElementById('captureForm').style.display = 'none';
-        document.getElementById('linkCalculadora').style.display = 'block';
-    }
-</script>
 
-</body>
-</html>
+
+    <input type="hidden" name="_next" value="https://edvaldo-p-santos.github.io/calculadora.html">
+
+    
+
+    <button type="submit" class="btn-submit">Liberar Calculadora do Valor da Paz</button>
+
+</form>
